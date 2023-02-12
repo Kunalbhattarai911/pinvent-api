@@ -70,7 +70,7 @@ const getProduct = asyncHandler (async (req, res) => {
     }
 
     res.status(200) .json(product)
-});
+})
 
 //Delete Product
 const deleteProducts = asyncHandler (async (req, res) => {
