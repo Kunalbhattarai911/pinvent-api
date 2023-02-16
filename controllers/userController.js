@@ -21,7 +21,7 @@ const registerUser = asyncHandler(async (req, res) => {
     // res.send("Register User");
 
     try {
-        const { name, email, password } = req.body;
+        const { name, email, password, phone, bio } = req.body;
 
         //validation
         if (!name || !email || !password) {
@@ -225,6 +225,15 @@ const updateUser = asyncHandler(async (req, res) => {
         user.phone = req.body.phone || phone;
         user.photo = req.body.photo || photo;
         user.bio = req.body.bio || bio;
+
+//validation
+    if (user.bio.length > 250) {
+    return res.status(400)
+        .json({
+            message: 'Bio must be upto 250 characters'
+        });
+
+}
 
         const updateUser = await user.save()
         return res.status(200).json(updateUser)
