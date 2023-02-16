@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Product = require("../models/productModel");
 const { fileSizeFormatter } = require("../utils/fileUpload");
+const { Mongoose, default: mongoose } = require("mongoose");
 const cloudinary = require("cloudinary").v2;
 
 //create the product
@@ -55,22 +56,39 @@ const getProducts = asyncHandler (async (req, res) => {
 });
 
 //get single product
-const getProduct = asyncHandler (async (req, res) => {
+// const getProduct = asyncHandler (async (req, res) => {
+//     const product = await Product.findById(req.params.id)
+
+//     //if product doesnot exist
+//     if (!product) {
+//         res.status(404) .json({message : "product not found"})
+//     }
+
+
+//     //Match product to its user
+//     if(product.user.toString() !== req.user.id) {
+//         res.status(401) .json({message : "user not authorized"})
+//     }
+
+//     res.status(200) .json(product)
+// })
+
+//-------> get single product <---------- /
+
+ const getProduct = asyncHandler (async (req, res) => {
+
+const valid = mongoose.Types.ObjectId.isValid(req.params.id);
+if(valid)
+{
     const product = await Product.findById(req.params.id)
-    
-    //if product doesnot exist
-    if (!product) {
-        res.status(404) .json({message : "product not found"})
+    if(product.user.toString() == req.user.id){
+        return res.status(200) .json(product)
     }
-
-
-    //Match product to its user
-    if(product.user.toString() !== req.user.id) {
-        res.status(401) .json({message : "user not authorized"})
-    }
-
-    res.status(200) .json(product)
-})
+    return res.status(200) .json({message:"product found"})
+}else{
+    return res.status(404) .json({message:"product not found"})
+}
+ })
 
 //Delete Product
 const deleteProducts = asyncHandler (async (req, res) => {

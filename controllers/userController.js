@@ -247,6 +247,12 @@ const changePassword = asyncHandler(async (req, res) => {
     if (!oldPassword || !password) {
         return res.status(400).json({ message: 'Please add old and new password' });
     }
+    if (password.length < 6) {
+        return res.status(400)
+            .json({
+                message: 'password must be upto 6 characters'
+            });
+        }
 
     //check if old password matches password in DB 
     const passwordIsCorrect = await bcrypt.compare(oldPassword, user.password)
