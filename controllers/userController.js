@@ -8,7 +8,7 @@ const sendEmail = require("../utils/sendEmail");
 
 //const generateToken = (id) => {
 //console.log("hello")
-//  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "1d"});
+  //return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "1d"});
 //};
 
 
@@ -277,7 +277,7 @@ const changePassword = asyncHandler(async (req, res) => {
 });
 
 //forget password
-const forgetPassword = asyncHandler(async (req, res) => {
+const forgot = asyncHandler(async (req, res) => {
     const { email } = req.body
     const user = await User.findOne({ email })
 
@@ -395,6 +395,6 @@ module.exports = {
     loginStatus,
     updateUser,
     changePassword,
-    forgetPassword,
+    forgot,
     resetPassword
 };
